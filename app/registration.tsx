@@ -84,6 +84,8 @@ const RegistrationForm = () => {
 
   const [selectedLanguage, setSelectedLanguage] = useState<"en" | "es">("en");
 
+  const [submittedLanguage, setSubmittedLanguage] = useState<"en" | "es">("en");
+
   const handleLanguageChange = (language: "en" | "es") => {
     setSelectedLanguage(language);
   };
@@ -91,23 +93,34 @@ const RegistrationForm = () => {
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
     setIsSubmitted(true);
+    setSubmittedLanguage(selectedLanguage);
   };
 
   interface ThankYouScreenProps {
     formData: FormData;
   }
 
-  const ThankYouScreen: React.FC<ThankYouScreenProps> = ({ formData }) => (
+  const ThankYouScreen: React.FC<
+    ThankYouScreenProps & {
+      submittedLanguage: "en" | "es";
+    }
+  > = ({ formData, submittedLanguage }) => (
     <div className="min-h-screen bg-white p-6 sm:p-8 flex flex-col items-center justify-center text-center">
       <div className="space-y-6">
         <h1 className="text-3xl font-semibold text-gray-800">
-          Thank you for registering!
+          {submittedLanguage === "en"
+            ? "Thank you for registering!"
+            : "¡Gracias por registrarte!"}
         </h1>
         <p className="text-xl text-gray-600">
-          We have received your application for {formData.team}.
+          {submittedLanguage === "en"
+            ? `We have received your application for ${formData.team}.`
+            : `Hemos recibido tu solicitud para ${formData.team}.`}
         </p>
         <p className="text-gray-500">
-          You will receive a confirmation email shortly.
+          {submittedLanguage === "en"
+            ? "You will receive a confirmation email shortly."
+            : "Recibirás un correo de confirmación en breve."}
         </p>
       </div>
     </div>
@@ -443,7 +456,10 @@ const RegistrationForm = () => {
   return (
     <div className="min-h-screen bg-white p-6 sm:p-8">
       {isSubmitted ? (
-        <ThankYouScreen formData={formData} />
+        <ThankYouScreen
+          formData={formData}
+          submittedLanguage={submittedLanguage}
+        />
       ) : (
         // Registration Form
         <>

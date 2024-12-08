@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import LanguageSelector from "./languageSelector";
 
 type TeamsType = {
   [key: string]: string[];
@@ -81,6 +82,12 @@ const RegistrationForm = () => {
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
+  const [selectedLanguage, setSelectedLanguage] = useState<"en" | "es">("en");
+
+  const handleLanguageChange = (language: "en" | "es") => {
+    setSelectedLanguage(language);
+  };
+
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
     setIsSubmitted(true);
@@ -149,16 +156,21 @@ const RegistrationForm = () => {
   const steps = [
     // Name Block
     {
-      title: "What's your name?",
+      title:
+        selectedLanguage === "en" ? "What's your name?" : "¿Cuál es tu nombre?",
       content: (
         <div className="space-y-8">
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              First Name
+              {selectedLanguage === "en" ? "First Name" : "Nombre"}
             </label>
             <input
               type="text"
-              placeholder="Enter your first name"
+              placeholder={
+                selectedLanguage === "en"
+                  ? "Enter your first name"
+                  : "Ingresa tu nombre"
+              }
               value={formData.firstName}
               onChange={(e) => handleInput("firstName", e.target.value)}
               className={inputClasses}
@@ -167,11 +179,15 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              Last Name
+              {selectedLanguage === "en" ? "Last Name" : "Apellido"}
             </label>
             <input
               type="text"
-              placeholder="Enter your last name"
+              placeholder={
+                selectedLanguage === "en"
+                  ? "Enter your last name"
+                  : "Ingresa tu apellido"
+              }
               value={formData.lastName}
               onChange={(e) => handleInput("lastName", e.target.value)}
               className={inputClasses}
@@ -182,12 +198,15 @@ const RegistrationForm = () => {
     },
     // contact info block
     {
-      title: "Contact Info",
+      title:
+        selectedLanguage === "en" ? "Contact Info" : "Información de Contacto",
       content: (
         <div className="space-y-8">
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              Phone number
+              {selectedLanguage === "en"
+                ? "Phone number"
+                : "Numero de Telefono"}
             </label>
             <input
               type="text"
@@ -200,7 +219,7 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              Email
+              {selectedLanguage === "en" ? "Email" : "Correo Electronico"}
             </label>
             <input
               type="text"
@@ -214,18 +233,26 @@ const RegistrationForm = () => {
       ),
     },
     {
-      title: "Date of Birth",
+      title:
+        selectedLanguage === "en" ? "Date of Birth" : "Fecha de Nacimiento",
       content: (
         <div className="space-y-8">
           <div className="flex gap-4">
             <div style={{ width: "80px" }}>
-              <label className="text-black text-xl font-medium">Month</label>
+              <label className="text-black text-xl font-medium">
+                {" "}
+                {selectedLanguage === "en" ? "Month" : "Mes"}
+              </label>
             </div>
             <div style={{ width: "80px" }}>
-              <label className="text-black text-xl font-medium">Day</label>
+              <label className="text-black text-xl font-medium">
+                {selectedLanguage === "en" ? "Day" : "Día"}
+              </label>
             </div>
             <div style={{ width: "120px" }}>
-              <label className="text-black text-xl font-medium">Year</label>
+              <label className="text-black text-xl font-medium">
+                {selectedLanguage === "en" ? "Year" : "Año"}
+              </label>
             </div>
           </div>
 
@@ -262,7 +289,7 @@ const RegistrationForm = () => {
 
             <input
               type="text"
-              placeholder="YYYY"
+              placeholder={selectedLanguage === "en" ? "YYYY" : "AAAA"}
               value={formData.birthYear}
               onChange={(e) =>
                 handleInput(
@@ -278,16 +305,19 @@ const RegistrationForm = () => {
     },
     // Address Block
     {
-      title: "What's your address?",
+      title:
+        selectedLanguage === "en"
+          ? "What's your address?"
+          : "¿Cuál es tu Dirección?",
       content: (
         <div className="space-y-8">
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              Address
+              {selectedLanguage === "en" ? "Address" : "Dirección"}
             </label>
             <input
               type="text"
-              placeholder="65 Hansen Way"
+              placeholder="123 Soccer Way"
               value={formData.streetAddress}
               onChange={(e) => handleInput("streetAddress", e.target.value)}
               className={inputClasses}
@@ -296,7 +326,9 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              Address line 2
+              {selectedLanguage === "en"
+                ? "Address Line 2"
+                : "Línea de Dirección 2"}
             </label>
             <input
               type="text"
@@ -309,11 +341,11 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              City
+              {selectedLanguage === "en" ? "City" : "Ciudad"}
             </label>
             <input
               type="text"
-              placeholder="Palo Alto"
+              placeholder="Watsonville"
               value={formData.city}
               onChange={(e) => handleInput("city", e.target.value)}
               className={inputClasses}
@@ -322,7 +354,7 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              State
+              {selectedLanguage === "en" ? "State" : "Estado"}
             </label>
             <input
               type="text"
@@ -336,7 +368,8 @@ const RegistrationForm = () => {
       ),
     },
     {
-      title: "Select your league",
+      title:
+        selectedLanguage === "en" ? "Select a League" : "Selecciona una Liga",
       content: (
         <div className="space-y-4">
           {data.leagues.map((league) => (
@@ -359,7 +392,10 @@ const RegistrationForm = () => {
       ),
     },
     {
-      title: "Select your division",
+      title:
+        selectedLanguage === "en"
+          ? "Select a Division"
+          : "Selecciona una División",
       content: (
         <div className="space-y-4">
           {data.divisions.map((division) => (
@@ -382,7 +418,8 @@ const RegistrationForm = () => {
       ),
     },
     {
-      title: "Select your team",
+      title:
+        selectedLanguage === "en" ? "Select a team" : "Selecciona un Equipo",
       content: (
         <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 -mr-2">
           {formData.division &&
@@ -424,6 +461,10 @@ const RegistrationForm = () => {
 
           {steps[step].content}
 
+          <div className="flex justify-end mt-8">
+            <LanguageSelector onLanguageChange={handleLanguageChange} />
+          </div>
+
           <div className="fixed bottom-0 left-0 right-0 bg-white border-gray-100 p-4">
             <div className="max-w-md mx-auto flex justify-between items-center">
               <button
@@ -447,11 +488,12 @@ const RegistrationForm = () => {
                         : "bg-[#4238D5]/50 text-white cursor-not-allowed"
                     }`}
                 >
-                  <span className="text-base font-medium">Submit</span>
+                  <span className="text-base font-medium">
+                    {selectedLanguage === "en" ? "Submit" : "Completar"}
+                  </span>
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </button>
               ) : (
-                // Regular forward button - same size as back button
                 <button
                   onClick={handleNext}
                   disabled={isNextDisabled()}

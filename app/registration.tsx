@@ -3,11 +3,33 @@
 import React, { useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
+type TeamsType = {
+  [key: string]: string[];
+};
+
 const RegistrationForm = () => {
+  type FormData = {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+    birthMonth: string;
+    birthDay: string;
+    birthYear: string;
+    streetAddress: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    league: string;
+    division: string;
+    team: string;
+  };
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    phoneNumber: "",
+    email: "",
     birthMonth: "",
     birthDay: "",
     birthYear: "",
@@ -16,31 +38,109 @@ const RegistrationForm = () => {
     city: "",
     state: "",
     league: "",
-    season: "",
     division: "",
     team: "",
   });
 
   const data = {
-    leagues: ["Premier League", "Championship League", "Regional League"],
-    seasons: ["2024 Spring", "2024 Summer", "2024 Fall"],
-    divisions: ["Division A", "Division B", "Division C"],
-    teams: ["Red Dragons", "Blue Eagles", "Green Lions", "Yellow Tigers"],
+    leagues: ["USL W League"],
+    divisions: ["Central Division", "South Division"],
+    teams: {
+      "Central Division": [
+        "Chicago Dutch Lions",
+        "Detroit City FC",
+        "Green Bay Glory",
+        "Illinois FC",
+        "Kings Hammer FC",
+        "Minneapolis City SC",
+        "Music City SC",
+        "Racing Louisville FC II",
+        "St. Charles FC",
+        "St. Louis Lions",
+        "TCO Minnesota",
+        "Thunder Bay Chill",
+        "FREE AGENT",
+      ],
+      "South Division": [
+        "Atlanta Panthers",
+        "Birmingham Legion FC",
+        "Capital City Cougars",
+        "FC Miami City",
+        "Florida Elite Soccer",
+        "Florida Krush",
+        "Miami AC",
+        "Orlando Kicks",
+        "South Carolina United",
+        "Southern Soccer Academy",
+        "Tampa Bay United",
+        "United Soccer Alliance",
+        "FREE AGENT",
+      ],
+    } as TeamsType,
   };
+
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const handleSubmit = () => {
+    console.log("Form submitted:", formData);
+    setIsSubmitted(true);
+  };
+
+  interface ThankYouScreenProps {
+    formData: FormData;
+  }
+
+  const ThankYouScreen: React.FC<ThankYouScreenProps> = ({ formData }) => (
+    <div className="min-h-screen bg-white p-6 sm:p-8 flex flex-col items-center justify-center text-center">
+      <div className="space-y-6">
+        <h1 className="text-3xl font-semibold text-gray-800">
+          Thank you for registering!
+        </h1>
+        <p className="text-xl text-gray-600">
+          We have received your application for {formData.team}.
+        </p>
+        <p className="text-gray-500">
+          You will receive a confirmation email shortly.
+        </p>
+      </div>
+    </div>
+  );
 
   const handleInput = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
+      // Clear dependent fields when parent selection changes
+      ...(field === "league" && { division: "", team: "" }),
+      ...(field === "division" && { team: "" }),
     }));
+
+    // Auto-advance to next step after selection
+    if (field === "league" || field === "division") {
+      handleNext();
+    }
   };
 
   const handleNext = () => {
-    setStep((prev) => Math.min(prev + 1, 6));
+    if (step === 4 && !formData.league) {
+      return; // Don't proceed if no league selected
+    }
+    if (step === 5 && !formData.division) {
+      return; // Don't proceed if no division selected
+    }
+
+    setStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
   const handleBack = () => {
     setStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const isNextDisabled = () => {
+    if (step === 4) return !formData.league; // League step
+    if (step === 5) return !formData.division; // Division step
+    if (step === 6) return step === steps.length - 1; // Team step (last step)
+    return false; // All other steps are freely navigable
   };
 
   const steps = [
@@ -77,76 +177,98 @@ const RegistrationForm = () => {
         </div>
       ),
     },
-    // Date of Birth Block
+    // contact info block
     {
-      title: "When were you born?",
+      title: "Contact Info",
       content: (
         <div className="space-y-8">
-          <div className="grid grid-cols-7 gap-4">
-            <div className="col-span-2">
+          <div>
+            <label className="text-black text-xl font-medium mb-2 block">
+              Phone number
+            </label>
+            <input
+              type="text"
+              placeholder="831-123-4567"
+              value={formData.phoneNumber}
+              onChange={(e) => handleInput("phoneNumber", e.target.value)}
+              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+            />
+          </div>
+
+          <div>
+            <label className="text-black text-xl font-medium mb-2 block">
+              Email
+            </label>
+            <input
+              type="text"
+              placeholder="hello@example.com"
+              value={formData.email}
+              onChange={(e) => handleInput("email", e.target.value)}
+              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Date of Birth",
+      content: (
+        <div className="space-y-8">
+          <div className="flex gap-4">
+            <div style={{ width: "80px" }}>
               <label className="text-blue-600 text-xl font-medium">Month</label>
             </div>
-            <div className="col-span-2">
+            <div style={{ width: "80px" }}>
               <label className="text-blue-600 text-xl font-medium">Day</label>
             </div>
-            <div className="col-span-3">
+            <div style={{ width: "120px" }}>
               <label className="text-blue-600 text-xl font-medium">Year</label>
             </div>
           </div>
 
-          <div className="grid grid-cols-7 gap-4 items-center">
-            <div className="col-span-2">
-              <input
-                type="text"
-                placeholder="MM"
-                value={formData.birthMonth}
-                onChange={(e) =>
-                  handleInput(
-                    "birthMonth",
-                    e.target.value.replace(/\D/g, "").slice(0, 2)
-                  )
-                }
-                className="w-full text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
-              />
-            </div>
+          <div className="flex items-center gap-4">
+            <input
+              type="text"
+              placeholder="MM"
+              value={formData.birthMonth}
+              onChange={(e) =>
+                handleInput(
+                  "birthMonth",
+                  e.target.value.replace(/\D/g, "").slice(0, 2)
+                )
+              }
+              className="w-[80px] text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+            />
 
-            <div className="col-span-1 text-center">
-              <span className="text-3xl text-gray-400">/</span>
-            </div>
+            <span className="text-3xl text-gray-400">/</span>
 
-            <div className="col-span-1">
-              <input
-                type="text"
-                placeholder="DD"
-                value={formData.birthDay}
-                onChange={(e) =>
-                  handleInput(
-                    "birthDay",
-                    e.target.value.replace(/\D/g, "").slice(0, 2)
-                  )
-                }
-                className="w-full text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="DD"
+              value={formData.birthDay}
+              onChange={(e) =>
+                handleInput(
+                  "birthDay",
+                  e.target.value.replace(/\D/g, "").slice(0, 2)
+                )
+              }
+              className="w-[80px] text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+            />
 
-            <div className="col-span-1 text-center">
-              <span className="text-3xl text-gray-400">/</span>
-            </div>
+            <span className="text-3xl text-gray-400">/</span>
 
-            <div className="col-span-2">
-              <input
-                type="text"
-                placeholder="YYYY"
-                value={formData.birthYear}
-                onChange={(e) =>
-                  handleInput(
-                    "birthYear",
-                    e.target.value.replace(/\D/g, "").slice(0, 4)
-                  )
-                }
-                className="w-full text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="YYYY"
+              value={formData.birthYear}
+              onChange={(e) =>
+                handleInput(
+                  "birthYear",
+                  e.target.value.replace(/\D/g, "").slice(0, 4)
+                )
+              }
+              className="w-[120px] text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+            />
           </div>
         </div>
       ),
@@ -184,7 +306,7 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              City/Town
+              City
             </label>
             <input
               type="text"
@@ -197,7 +319,7 @@ const RegistrationForm = () => {
 
           <div>
             <label className="text-black text-xl font-medium mb-2 block">
-              State/Region/Province
+              State
             </label>
             <input
               type="text"
@@ -210,9 +332,8 @@ const RegistrationForm = () => {
         </div>
       ),
     },
-    // League Selection
     {
-      title: "Which league do you play in?",
+      title: "Select your league",
       content: (
         <div className="space-y-4">
           {data.leagues.map((league) => (
@@ -220,7 +341,6 @@ const RegistrationForm = () => {
               key={league}
               onClick={() => {
                 handleInput("league", league);
-                handleNext();
               }}
               className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
                 formData.league === league
@@ -235,34 +355,8 @@ const RegistrationForm = () => {
         </div>
       ),
     },
-    // Season Selection
     {
-      title: "Which season are you registering for?",
-      content: (
-        <div className="space-y-4">
-          {data.seasons.map((season) => (
-            <button
-              key={season}
-              onClick={() => {
-                handleInput("season", season);
-                handleNext();
-              }}
-              className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
-                formData.season === season
-                  ? "border-blue-500 bg-blue-50 text-blue-700"
-                  : "border-gray-200 hover:border-blue-200 hover:bg-blue-50"
-              }`}
-            >
-              <span>{season}</span>
-              <ChevronRight className="w-6 h-6 text-gray-400" />
-            </button>
-          ))}
-        </div>
-      ),
-    },
-    // Division Selection
-    {
-      title: "Which division do you play in?",
+      title: "Select your division",
       content: (
         <div className="space-y-4">
           {data.divisions.map((division) => (
@@ -270,7 +364,6 @@ const RegistrationForm = () => {
               key={division}
               onClick={() => {
                 handleInput("division", division);
-                handleNext();
               }}
               className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
                 formData.division === division
@@ -285,62 +378,94 @@ const RegistrationForm = () => {
         </div>
       ),
     },
-    // Team Selection
     {
       title: "Select your team",
       content: (
-        <div className="space-y-4">
-          {data.teams.map((team) => (
-            <button
-              key={team}
-              onClick={() => handleInput("team", team)}
-              className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
-                formData.team === team
-                  ? "border-blue-500 bg-blue-50 text-blue-700"
-                  : "border-gray-200 hover:border-blue-200 hover:bg-blue-50"
-              }`}
-            >
-              <span>{team}</span>
-              <ChevronRight className="w-6 h-6 text-gray-400" />
-            </button>
-          ))}
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 -mr-2">
+          {formData.division &&
+            data.teams[formData.division].map((team) => (
+              <button
+                key={team}
+                onClick={() => handleInput("team", team)}
+                className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
+                  formData.team === team
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 hover:border-blue-200 hover:bg-blue-50"
+                }`}
+              >
+                <span>{team}</span>
+              </button>
+            ))}
         </div>
       ),
     },
   ];
-
   return (
     <div className="min-h-screen bg-white p-6 sm:p-8">
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-200 h-1 rounded-full mb-8">
-        <div
-          className="bg-blue-500 h-1 rounded-full transition-all duration-500"
-          style={{ width: `${((step + 1) / steps.length) * 100}%` }}
-        />
-      </div>
+      {isSubmitted ? (
+        <ThankYouScreen formData={formData} />
+      ) : (
+        // Registration Form
+        <>
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-200 h-1 rounded-full mb-8">
+            <div
+              className="bg-blue-500 h-1 rounded-full transition-all duration-500"
+              style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+            />
+          </div>
 
-      <h2 className="text-3xl font-semibold mb-12 text-gray-800">
-        {steps[step].title}
-      </h2>
+          <h2 className="text-3xl font-semibold mb-12 text-gray-800">
+            {steps[step].title}
+          </h2>
 
-      {steps[step].content}
+          {steps[step].content}
 
-      <div className="flex justify-between pt-8">
-        <button
-          onClick={handleBack}
-          className="p-4 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-          disabled={step === 0}
-        >
-          <ChevronLeft className="w-8 h-8 text-gray-600" />
-        </button>
-        <button
-          onClick={handleNext}
-          className="p-4 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors"
-          disabled={step === steps.length - 1}
-        >
-          <ChevronRight className="w-8 h-8 text-white" />
-        </button>
-      </div>
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-gray-100 p-4">
+            <div className="max-w-md mx-auto flex justify-between items-center">
+              <button
+                onClick={handleBack}
+                className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50"
+                disabled={step === 0}
+              >
+                <ChevronLeft className="w-8 h-8 text-gray-600" />
+              </button>
+
+              {/* Forward/Submit button */}
+              {step === steps.length - 1 ? (
+                // Submit button with special styling
+                <button
+                  onClick={handleSubmit}
+                  disabled={!formData.team}
+                  className={`h-20 flex-1 flex items-center justify-center rounded-full px-6 transition-colors
+                    ${
+                      formData.team
+                        ? "bg-blue-500 hover:bg-blue-600 text-white"
+                        : "bg-blue-500/50 text-white cursor-not-allowed"
+                    }`}
+                >
+                  <span className="text-base font-medium">Submit</span>
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </button>
+              ) : (
+                // Regular forward button - same size as back button
+                <button
+                  onClick={handleNext}
+                  disabled={isNextDisabled()}
+                  className={`w-20 h-20 flex items-center justify-center rounded-full transition-colors
+                    ${
+                      isNextDisabled()
+                        ? "bg-blue-500/50 cursor-not-allowed"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    }`}
+                >
+                  <ChevronRight className="w-6 h-6 text-white" />
+                </button>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

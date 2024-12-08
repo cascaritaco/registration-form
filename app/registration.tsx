@@ -143,6 +143,9 @@ const RegistrationForm = () => {
     return false; // All other steps are freely navigable
   };
 
+  const inputClasses =
+    "w-full text-xl p-4 border-b border-gray-200 focus:border-b-2 focus:border-[#170CB4] focus:outline-none bg-transparent placeholder-gray-400 text-[#1E1E1E] font-medium";
+
   const steps = [
     // Name Block
     {
@@ -158,7 +161,7 @@ const RegistrationForm = () => {
               placeholder="Enter your first name"
               value={formData.firstName}
               onChange={(e) => handleInput("firstName", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
 
@@ -171,7 +174,7 @@ const RegistrationForm = () => {
               placeholder="Enter your last name"
               value={formData.lastName}
               onChange={(e) => handleInput("lastName", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
         </div>
@@ -191,7 +194,7 @@ const RegistrationForm = () => {
               placeholder="831-123-4567"
               value={formData.phoneNumber}
               onChange={(e) => handleInput("phoneNumber", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
 
@@ -204,7 +207,7 @@ const RegistrationForm = () => {
               placeholder="hello@example.com"
               value={formData.email}
               onChange={(e) => handleInput("email", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
         </div>
@@ -216,13 +219,13 @@ const RegistrationForm = () => {
         <div className="space-y-8">
           <div className="flex gap-4">
             <div style={{ width: "80px" }}>
-              <label className="text-blue-600 text-xl font-medium">Month</label>
+              <label className="text-black text-xl font-medium">Month</label>
             </div>
             <div style={{ width: "80px" }}>
-              <label className="text-blue-600 text-xl font-medium">Day</label>
+              <label className="text-black text-xl font-medium">Day</label>
             </div>
             <div style={{ width: "120px" }}>
-              <label className="text-blue-600 text-xl font-medium">Year</label>
+              <label className="text-black text-xl font-medium">Year</label>
             </div>
           </div>
 
@@ -237,10 +240,10 @@ const RegistrationForm = () => {
                   e.target.value.replace(/\D/g, "").slice(0, 2)
                 )
               }
-              className="w-[80px] text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className="w-[80px] text-3xl p-4 border-b border-gray-200 focus:border-b-2 focus:border-[#170CB4] focus:outline-none bg-transparent placeholder-gray-400 text-[#1E1E1E] font-medium"
             />
 
-            <span className="text-3xl text-gray-400">/</span>
+            <span className="text-3xl text-[#4238D5]">/</span>
 
             <input
               type="text"
@@ -252,10 +255,10 @@ const RegistrationForm = () => {
                   e.target.value.replace(/\D/g, "").slice(0, 2)
                 )
               }
-              className="w-[80px] text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className="w-[80px] text-3xl p-4 border-b border-gray-200 focus:border-b-2 focus:border-[#170CB4] focus:outline-none bg-transparent placeholder-gray-400 text-[#1E1E1E] font-medium"
             />
 
-            <span className="text-3xl text-gray-400">/</span>
+            <span className="text-3xl text-[#4238D5]">/</span>
 
             <input
               type="text"
@@ -267,7 +270,7 @@ const RegistrationForm = () => {
                   e.target.value.replace(/\D/g, "").slice(0, 4)
                 )
               }
-              className="w-[120px] text-3xl p-4 border-b-2 border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className="w-[120px] text-3xl p-4 border-b border-gray-200 focus:border-b-2 focus:border-[#170CB4] focus:outline-none bg-transparent placeholder-gray-400 text-[#1E1E1E] font-medium"
             />
           </div>
         </div>
@@ -287,7 +290,7 @@ const RegistrationForm = () => {
               placeholder="65 Hansen Way"
               value={formData.streetAddress}
               onChange={(e) => handleInput("streetAddress", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
 
@@ -300,7 +303,7 @@ const RegistrationForm = () => {
               placeholder="Apartment 4"
               value={formData.addressLine2}
               onChange={(e) => handleInput("addressLine2", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
 
@@ -313,7 +316,7 @@ const RegistrationForm = () => {
               placeholder="Palo Alto"
               value={formData.city}
               onChange={(e) => handleInput("city", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
 
@@ -326,7 +329,7 @@ const RegistrationForm = () => {
               placeholder="California"
               value={formData.state}
               onChange={(e) => handleInput("state", e.target.value)}
-              className="w-full text-xl p-4 border-b-2 border-gray-300 focus:border-blue-600 focus:outline-none bg-transparent placeholder-gray-300"
+              className={inputClasses}
             />
           </div>
         </div>
@@ -344,12 +347,12 @@ const RegistrationForm = () => {
               }}
               className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
                 formData.league === league
-                  ? "border-blue-500 bg-blue-50 text-blue-700"
-                  : "border-gray-200 hover:border-blue-200 hover:bg-blue-50"
+                  ? "border-[#170CB4] bg-[#F2E6F7] text-[#170CB4]" // Selected state
+                  : "border-[#1E1E1E]/20 hover:border-[#4238D5] hover:bg-[#F1F1F1] text-[#1E1E1E]"
               }`}
             >
               <span>{league}</span>
-              <ChevronRight className="w-6 h-6 text-gray-400" />
+              <ChevronRight className={"w-6 h-6 text-[#4238D5]"} />
             </button>
           ))}
         </div>
@@ -365,14 +368,14 @@ const RegistrationForm = () => {
               onClick={() => {
                 handleInput("division", division);
               }}
-              className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
+              className={`w-full p-6 text-xl text-left rounded-xl border-2 transition-all duration-200 flex justify-between items-center ${
                 formData.division === division
-                  ? "border-blue-500 bg-blue-50 text-blue-700"
-                  : "border-gray-200 hover:border-blue-200 hover:bg-blue-50"
+                  ? "border-[#170CB4] bg-[#F2E6F7] text-[#170CB4]" // Selected state
+                  : "border-[#1E1E1E]/20 hover:border-[#4238D5] hover:bg-[#F1F1F1] text-[#1E1E1E]" // Default & hover state
               }`}
             >
-              <span>{division}</span>
-              <ChevronRight className="w-6 h-6 text-gray-400" />
+              <span className="font-medium">{division}</span>
+              <ChevronRight className={"w-6 h-6 text-[#4238D5]"} />
             </button>
           ))}
         </div>
@@ -389,8 +392,8 @@ const RegistrationForm = () => {
                 onClick={() => handleInput("team", team)}
                 className={`w-full p-6 text-xl text-left rounded-xl border transition-all duration-200 flex justify-between items-center ${
                   formData.team === team
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 hover:border-blue-200 hover:bg-blue-50"
+                    ? "border-[#170CB4] bg-[#F2E6F7] text-[#170CB4]" // Selected state
+                    : "border-[#1E1E1E]/20 hover:border-[#4238D5] hover:bg-[#F1F1F1] text-[#1E1E1E]"
                 }`}
               >
                 <span>{team}</span>
@@ -410,7 +413,7 @@ const RegistrationForm = () => {
           {/* Progress Bar */}
           <div className="w-full bg-gray-200 h-1 rounded-full mb-8">
             <div
-              className="bg-blue-500 h-1 rounded-full transition-all duration-500"
+              className="bg-[#170CB4] h-1 rounded-full transition-all duration-500"
               style={{ width: `${((step + 1) / steps.length) * 100}%` }}
             />
           </div>
@@ -440,8 +443,8 @@ const RegistrationForm = () => {
                   className={`h-20 flex-1 flex items-center justify-center rounded-full px-6 transition-colors
                     ${
                       formData.team
-                        ? "bg-blue-500 hover:bg-blue-600 text-white"
-                        : "bg-blue-500/50 text-white cursor-not-allowed"
+                        ? "bg-[#170CB4] hover:bg-[#830AAF] text-white"
+                        : "bg-[#4238D5]/50 text-white cursor-not-allowed"
                     }`}
                 >
                   <span className="text-base font-medium">Submit</span>
@@ -455,8 +458,8 @@ const RegistrationForm = () => {
                   className={`w-20 h-20 flex items-center justify-center rounded-full transition-colors
                     ${
                       isNextDisabled()
-                        ? "bg-blue-500/50 cursor-not-allowed"
-                        : "bg-blue-500 hover:bg-blue-600"
+                        ? "bg-[#4238D5]/50 cursor-not-allowed"
+                        : "bg-[#170CB4] hover:bg-[#830AAF]"
                     }`}
                 >
                   <ChevronRight className="w-6 h-6 text-white" />
